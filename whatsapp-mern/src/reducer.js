@@ -1,6 +1,5 @@
 export const initialState = {
     user: null,
-    friends: [],
     signUpStatus: false
 }
 

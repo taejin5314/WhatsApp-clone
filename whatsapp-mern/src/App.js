@@ -10,9 +10,31 @@ import Pusher from 'pusher-js';
 import axios from './axios';
 // Import Router DOM
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
+import { auth } from './firebase';
+import { useStateValue } from './StateProvider';
 
 function App() {
+  const [{ user }, dispatch] = useStateValue();
+
   const [Messages, setMessages] = useState([])
+
+  useEffect(() => {
+    auth.onAuthStateChanged(authUser => {
+      console.log("The user is >>> ", authUser);
+
+      if (authUser) {
+        dispatch({
+          type: 'SET_USER',
+          user: authUser
+        })
+      } else {
+        dispatch({
+          type: 'SET_USER',
+          user: null
+        })
+      }
+    })
+  }, [])
 
   useEffect(() => {
     axios.get('/messages/sync')
@@ -50,7 +72,6 @@ function App() {
               <Sidebar />
               <Chat messages={Messages} />
             </Route>
-
             <Route path="/login">
               <Login />
             </Route>

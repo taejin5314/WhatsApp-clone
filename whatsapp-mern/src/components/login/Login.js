@@ -1,26 +1,30 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useStateValue } from '../../StateProvider';
 import './Login.css'
 import SearchIcon from '@material-ui/icons/Search';
 import { db, auth } from '../../firebase';
-import { GoogleLogin } from 'react-google-login'
+import { GoogleLogin } from 'react-google-login';
+import axios from '../../axios';
+import { useHistory } from 'react-router-dom';
 
 function Login() {
+    const [{ user, signUpStatus }, dispatch] = useStateValue();
+
+    const history = useHistory();
+
+    const [LoginEmail, setLoginEmail] = useState('');
+    const [LoginPassword, setLoginPassword] = useState('');
+
+    const [RegisterName, setRegisterName] = useState('');
+    const [RegisterEmail, setRegisterEmail] = useState('');
+    const [RegisterPassword, setRegisterPassword] = useState('');
+    const [RegisterConfirm, setRegisterConfirm] = useState('');
+    const [Disabled, setDisabled] = useState(true)
 
     const responseGoogle = (response) => {
         console.log(response);
     }
 
-    const [{ user, signUpStatus }, dispatch] = useStateValue();
-
-    const addFriend = () => {
-        dispatch({
-            type: "SET_USER",
-            friend: {
-                name: "Taejin"
-            }
-        })
-    }
 
     const signIn = () => {
         dispatch({
@@ -32,6 +36,39 @@ function Login() {
         dispatch({
             type: "SIGN_UP",
         })
+    }
+
+    const login = e => {
+        e.preventDefault();
+
+        auth
+            .signInWithEmailAndPassword(LoginEmail, LoginPassword)
+            .then((auth) => {
+                history.push('/')
+            })
+            .catch(error => alert(error.message))
+    }
+
+    const register = async (e) => {
+        e.preventDefault();
+
+        auth
+            .createUserWithEmailAndPassword(RegisterEmail, RegisterPassword)
+            .then(function () {
+                var user = auth.currentUser;
+                user.updateProfile({
+                    displayName: RegisterName,
+                })
+                alert('Your account is created!')
+            })
+            .then(await function () {
+                axios.post('/users/new', {
+                    name: RegisterName,
+                })
+            })
+            .catch(error => alert(error.message))
+
+
     }
 
     return (
@@ -58,15 +95,15 @@ function Login() {
                         <form>
                             <div className="login__inputContainer">
                                 <SearchIcon />
-                                <input placeholder="User Name" type="text" />
+                                <input placeholder="Email" onChange={e => setLoginEmail(e.target.value)} type="email" />
                             </div>
 
                             <div className="login__inputContainer">
                                 <SearchIcon />
-                                <input placeholder="Password" type="text" />
+                                <input placeholder="Password" onChange={e => setLoginPassword(e.target.value)} type="password" />
                             </div>
 
-                            <button className="login__loginButton">Sign In</button>
+                            <button className="login__loginButton" onClick={login}>Sign In</button>
 
                             <div className="login__separator">
                                 or
@@ -87,19 +124,20 @@ function Login() {
                         <form>
                             <div className="login__inputContainer">
                                 <SearchIcon />
-                                <input placeholder="User Name" type="text" />
+                                <input placeholder="Name" onChange={e => setRegisterName(e.target.value)} type="text" />
                             </div>
 
                             <div className="login__inputContainer">
                                 <SearchIcon />
-                                <input placeholder="Password" type="text" />
-                            </div>
-                            <div className="login__inputContainer">
-                                <SearchIcon />
-                                <input placeholder="Confirm Password" type="text" />
+                                <input placeholder="Email" onChange={e => setRegisterEmail(e.target.value)} type="email" />
                             </div>
 
-                            <button className="login__loginButton">Sign Up</button>
+                            <div className="login__inputContainer">
+                                <SearchIcon />
+                                <input placeholder="Password" onChange={e => setRegisterPassword(e.target.value)} type="password" />
+                            </div>
+
+                            <button onClick={register} className="login__loginButton">Sign Up</button>
                         </form>
                     }
                 </div>
