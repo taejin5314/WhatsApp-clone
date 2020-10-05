@@ -6,6 +6,7 @@ import { db, auth } from '../../firebase';
 import { GoogleLogin } from 'react-google-login';
 import axios from '../../axios';
 import { useHistory } from 'react-router-dom';
+import logo from '../../images/logo.svg'
 
 function Login() {
     const [{ user, signUpStatus }, dispatch] = useStateValue();
@@ -76,7 +77,7 @@ function Login() {
 
             <div className="login__left">
                 <div className="login__leftHeader">
-                    <img src="https://lh3.googleusercontent.com/proxy/KCTpLHU3_7jIljZRvS81ALANPWQ15ho4tNDBa-eril0LJG0bmpGq4pvQD40NDKNzPo8nicUEiT_QmggxatoOQf0AQd6yDnV6vCLFk4ZmW4Beq-71kPk" />
+                    <img src={logo} />
                     <h2>WhatsApp</h2>
                 </div>
 

@@ -16,13 +16,15 @@
   box-shadow: 1px 5px 5px lightgray;
 }
 
-.login__leftHeader > img {
+.login__leftHeader>img {
+  margin: auto;
   margin-top: 5px;
   height: 50%;
+  width: 50px;
   object-fit: contain;
 }
 
-.login__leftHeader > h2 {
+.login__leftHeader>h2 {
   height: 50%;
   font-size: 1.5rem;
   text-align: center;
@@ -33,7 +35,7 @@
   height: 80%;
 }
 
-.login__leftContainer > form {
+.login__leftContainer>form {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -93,12 +95,12 @@
   box-shadow: 5px 5px 5px lightgray;
 }
 
-.login__inputContainer > .MuiSvgIcon-root {
+.login__inputContainer>.MuiSvgIcon-root {
   color: gray;
   padding: 10px;
 }
 
-.login__inputContainer > input {
+.login__inputContainer>input {
   border: none;
   outline-width: 0;
   margin-left: 10px;
