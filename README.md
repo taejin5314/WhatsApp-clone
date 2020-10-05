@@ -4,7 +4,7 @@ This project is cloning WhatsApp using MERN stack (MongoDB, Express, React, Node
 
 ## Initialize the project
 
-On the one termianl, <br />
+On the one terminal, <br />
 `cd whatsapp-backend`: Go into the backend folder. <br />
 `node server.js`: Start the backend server which is conneted to mongo DB. <br />
 
